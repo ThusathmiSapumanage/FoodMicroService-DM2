@@ -17,16 +17,51 @@ public class FoodController {
 
     @PostMapping("/foods")
     public String addFood(
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam MultipartFile file,
-            @RequestParam Double price
-    ) {
-        try {
-            foodService.addFood(name, description, file, price);
-            return "Food item added successfully!";
-        } catch (IOException e) {
-            return "Error adding food item: " + e.getMessage();
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("price") Double price,
+            @RequestParam("category") String category) throws IOException {
+        try
+        {
+            foodService.addFood(name, description, file, price, category);
+            return "Food added successfully";
+        }
+        catch (Exception e)
+        {
+            return "Error adding food: " + e.getMessage();
+        }
+    }
+
+    @PutMapping("/foods/{id}")
+    public String updateFood(
+            @PathVariable("id") int id,
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("price") Double price,
+            @RequestParam("category") String category) throws IOException {
+        try
+        {
+            foodService.updateFood(id, name, description, file, price, category);
+            return "Food updated successfully";
+        }
+        catch (Exception e)
+        {
+            return "Error updating food: " + e.getMessage();
+        }
+    }
+
+    @DeleteMapping("/foods/{id}")
+    public String deleteFood(@PathVariable("id") int id) {
+        try
+        {
+            foodService.deleteFood(id);
+            return "Food deleted successfully";
+        }
+        catch (Exception e)
+        {
+            return "Error deleting food: " + e.getMessage();
         }
     }
 
@@ -40,38 +75,15 @@ public class FoodController {
         return foodService.getFoodById(id);
     }
 
-    @PutMapping("foods/{id}")
-    public String updateFood(
-            @PathVariable int id,
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam(required = false) MultipartFile file,
-            @RequestParam Double price
-    ) {
-        try {
-            foodService.updateFood(id, name, description, file, price);
-            return "Food item updated successfully!";
-        } catch (IOException e) {
-            return "Error updating food item: " + e.getMessage();
-        }
-    }
-
-    @DeleteMapping("foods/{id}")
-    public String deleteFood(@PathVariable int id) {
-        foodService.deleteFood(id);
-        return "Food item deleted successfully!";
-    }
-
-    @GetMapping("foods/search") //to test
-    public List<Food> searchFoodByName(@RequestParam String name) {
+    @GetMapping("foods/search")
+    public List<Food> searchByName(@RequestParam String name) {
         return foodService.searchFoodByName(name);
     }
 
-    @GetMapping("foods/filter") //to test
-    public List<Food> filterByPriceRange(
-            @RequestParam Double minPrice,
-            @RequestParam Double maxPrice
-    ) {
-        return foodService.filterByPriceRange(minPrice, maxPrice);
+    @GetMapping("foods/filter")
+    public List<Food> filterByPrice(@RequestParam Double min,
+                                    @RequestParam Double max) {
+        return foodService.filterByPrice(min, max);
     }
+
 }

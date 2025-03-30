@@ -6,13 +6,15 @@ public class Food {
     private String food_description;
     private byte[] food_pic;
     private double food_price;
+    private String food_category;
 
-    public Food(int foodId, String food_name, String food_description, byte[] food_pic, double food_price) {
+    public Food(int foodId, String food_name, String food_description, byte[] food_pic, double food_price, String food_category) {
         this.foodId = foodId;
         this.food_name = food_name;
         this.food_description = food_description;
         this.food_pic = food_pic;
         this.food_price = food_price;
+        this.food_category = food_category;
     }
 
     public int getFoodId() {
@@ -54,5 +56,14 @@ public class Food {
     public void setFood_price(double food_price) {
         this.food_price = food_price;
     }
+
+    public String getFood_category() {
+        return food_category;
+    }
+
+    public void setFood_category(String food_category) {
+        this.food_category = food_category;
+    }
+
 
 }
